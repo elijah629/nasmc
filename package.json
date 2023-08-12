@@ -1,0 +1,34 @@
+{
+	"private": true,
+	"scripts": {
+		"dev": "next dev --turbo --show-all",
+		"build": "next build",
+		"start": "next start",
+		"lint:next": "next lint",
+		"lint:prettier": "prettier . --write",
+		"lint": "concurrently \"npm:lint:*\""
+	},
+	"dependencies": {
+		"highlight.js": "^11.8.0",
+		"next": "^13.4.13",
+		"react": "18.2.0",
+		"react-dom": "18.2.0",
+		"uuid": "^9.0.0"
+	},
+	"devDependencies": {
+		"@types/node": "^20.4.9",
+		"@types/react": "^18.2.20",
+		"@types/react-dom": "^18.2.7",
+		"@types/uuid": "^9.0.2",
+		"autoprefixer": "10.4.14",
+		"concurrently": "^8.2.0",
+		"eslint": "^8.46.0",
+		"eslint-config-next": "^13.4.13",
+		"postcss": "^8.4.27",
+		"prettier": "^3.0.1",
+		"prettier-plugin-organize-imports": "^3.2.3",
+		"prettier-plugin-tailwindcss": "^0.4.1",
+		"tailwindcss": "^3.3.3",
+		"typescript": "^5.1.6"
+	}
+}
