@@ -98,15 +98,7 @@ export default function Compiler() {
 								let addr_trimmed = x[0].trimStart();
 								let address = addr_trimmed.substring(0, addr_trimmed.length - 1);
 								
-								return <tr key={i}>
-									<td className="hljs-number">{address}</td> {/* Address */}
-									<td className="hljs-number">{x[1].trimEnd()}</td> {/* Instruction hex */}
-									<td dangerouslySetInnerHTML={{
-										__html: hljs.highlight(x[2], {
-											language: "x86asm"
-										}).value
-									}}></td> {/* HLJSed Code */}
-								</tr>;
+								return <tr key={i}><td className="hljs-number">{address}</td><td className="hljs-number">{x[1].trimEnd()}</td><td dangerouslySetInnerHTML={{ __html: hljs.highlight(x[2], {language: "x86asm"}).value}}></td></tr>;
 							})}
 						</tbody>
 							</table>
