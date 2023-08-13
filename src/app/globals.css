@@ -35,7 +35,7 @@ main {
 	height: 100%;
 }
 
-pre > code {
+code.code-block {
 	@apply block whitespace-pre-wrap border-[1px] border-[#999] p-5;
 }
 

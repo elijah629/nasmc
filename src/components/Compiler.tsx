@@ -17,6 +17,7 @@ export default function Compiler() {
 
 	return (
 		<>
+			<h1>Code:</h1>
 			<Editor
 				onChange={setCode}
 				language="x86asm"
@@ -33,16 +34,12 @@ export default function Compiler() {
 							
 							const elf_or_error = await response.text();
 							
-							{
-								if (response.status === 400) {
-									setError(elf_or_error);
-									return;
-								}
-								setError(undefined);
+							if (response.status === 400) {
+								setError(elf_or_error);
+								return;
 							}
 
 							_elf = elf_or_error;
-							console.log(_elf.split("").map(x => x.charCodeAt(0)).join(" "));
 							setElf(elf_or_error);
 						}
 						
@@ -55,17 +52,14 @@ export default function Compiler() {
 
 							const decompiled_or_error = await response.text();
 
-							{
-								if (response.status === 400) {
-									setError(decompiled_or_error);
-									return;
-								}
-								setError(undefined);
+							if (response.status === 400) {
+								setError(decompiled_or_error);
+								return;
 							}
-
 							decompiled_unprocessed = decompiled_or_error;
 						}
-
+					
+						setError(undefined);
 						
 						{
 							const iOf = decompiled_unprocessed.indexOf(">");
@@ -73,19 +67,8 @@ export default function Compiler() {
 							if (iOf === -1) {
 								setDecompiled("");
 							} else {
-								let lines = decompiled_unprocessed.substring(iOf + 3).split("\n");
-								let lines2 = lines
-								.filter(x => !!x)
-								.map(x => x.split("\t"))
-								.map(x => [
-										parseInt(x[0].trimStart()) + " ",
-										x[1],
-										hljs.highlight(x[2], {
-											language: "x86asm"
-										}).value
-								].join(" "));
-									
-								setDecompiled(lines2.join("\n"));
+								let lines = decompiled_unprocessed.substring(iOf + 3);
+								setDecompiled(lines);
 							}
 						}
 					}}
@@ -97,20 +80,38 @@ export default function Compiler() {
 				<>
 					<h1>Error:</h1>
 					<pre>
-						<code className="bg-red-500 bg-opacity-40">
+						<code className="code-block bg-red-500 bg-opacity-40">
 							{error}
 						</code>
 					</pre>
 				</>
 			)}
 
-			<h1>Decompiled:</h1>
-			<pre>
-				<code
-					dangerouslySetInnerHTML={{
-						__html: decompiled ?? ""
-					}}></code>
-			</pre>
+			{decompiled &&
+			<><h1>Decompiled:</h1>
+				<code className="code-block">
+					<table  className="w-full">
+						
+						<tbody>{decompiled.split("\n").filter(x => !!x)
+							.map(x => x.split("\t"))
+							.map((x, i) => {
+								let addr_trimmed = x[0].trimStart();
+								let address = addr_trimmed.substring(0, addr_trimmed.length - 1);
+								
+								return <tr key={i}>
+									<td className="hljs-number">{address}</td> {/* Address */}
+									<td className="hljs-number">{x[1].trimEnd()}</td> {/* Instruction hex */}
+									<td dangerouslySetInnerHTML={{
+										__html: hljs.highlight(x[2], {
+											language: "x86asm"
+										}).value
+									}}></td> {/* HLJSed Code */}
+								</tr>;
+							})}
+						</tbody>
+							</table>
+					</code>
+			</>}
 		</>
 	);
 }

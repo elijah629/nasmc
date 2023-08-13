@@ -60,7 +60,7 @@ export default function Editor(props: {
 				<pre className="col-start-1 row-start-1 w-full overflow-auto">
 					<code
 						ref={highlighted_elem}
-						className="min-h-[65.6px] overflow-auto"
+						className="code-block min-h-[65.6px] overflow-auto"
 						dangerouslySetInnerHTML={{
 							__html:
 								(highlighted?.value.endsWith("\n")
