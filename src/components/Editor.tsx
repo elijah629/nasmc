@@ -50,9 +50,52 @@ export default function Editor(props: {
 					spellCheck="false"
 					onScroll={e =>
 						update_scroll(
-							e.target as EventTarget & HTMLTextAreaElement
+							e.target as HTMLTextAreaElement
 						)
 					}
+					onKeyDown={e => {
+						let element = e.target as HTMLTextAreaElement;
+						let code = element.value;
+						if (e.key === "Tab") {
+							e.preventDefault();
+
+							const before_tab = code.substring(0, element.selectionStart);
+							const after_tab = code.substring(element.selectionEnd);
+
+							const cursor_pos = element.selectionEnd + 1;
+							element.value = before_tab + "\t" + after_tab;
+							
+							// Move cursor
+							element.selectionStart = cursor_pos;
+							element.selectionEnd = cursor_pos;
+
+							setCode(element.value);
+							update_scroll(element);
+						} else if (e.key === "/" && e.ctrlKey) {
+							e.preventDefault();
+
+							const lines = element.value.split("\n");
+							const lines_after_cursor = element.value.substring(element.selectionStart).split("\n").length;
+							const total_lines = lines.length;
+							const current_line_idx = total_lines - lines_after_cursor;
+							const current_line = lines[current_line_idx];
+							
+							const start_of_code = current_line.length - current_line.trimStart().length;
+							const COMMENT = ";";
+
+							if (current_line[start_of_code] === COMMENT) {	
+								lines[current_line_idx] = current_line.substring(0, start_of_code) + current_line.substring(start_of_code + COMMENT.length + 1);
+							} else {
+								lines[current_line_idx] = current_line.substring(0, start_of_code) + COMMENT + " " + current_line.substring(start_of_code);
+							}
+							
+							element.value = lines.join("\n");
+
+							setCode(element.value);
+							update_scroll(element);
+						}
+
+					}}
 					onChange={({ target }) => {
 						setCode(target.value);
 						update_scroll(target);
