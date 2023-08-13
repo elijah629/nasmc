@@ -6,9 +6,9 @@
 	--accent: theme("colors.accent");
 }
 
-main {
-	@apply flex flex-col gap-4 bg-background p-10 -tracking-[.02em] text-white;
-}
+/* main {
+	@apply sm:p-10;
+} */
 
 header.site-header {
 	@apply flex;

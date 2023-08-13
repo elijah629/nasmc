@@ -14,7 +14,16 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang="en">
-			<body className={firacode.className}>{children}</body>
+			<body className={firacode.className}>
+				<div className="h-full bg-background -tracking-[.02em] text-white sm:p-10">
+					<header className="site-header">
+						<span>nasmc</span>
+					</header>
+					<main className="mt-4 flex flex-col gap-2 overflow-auto p-2 sm:p-0">
+						{children}
+					</main>
+				</div>
+			</body>
 		</html>
 	);
 }
