@@ -15,7 +15,7 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={firacode.className}>
-				<div className="h-full bg-background -tracking-[.02em] overflow-auto text-white sm:p-10">
+				<div className="h-full bg-background flex flex-col -tracking-[.02em] overflow-auto text-white sm:p-10">
 					<header className="site-header">
 						<span>nasmc</span>
 					</header>
