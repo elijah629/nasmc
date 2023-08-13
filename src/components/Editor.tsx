@@ -72,6 +72,7 @@ export default function Editor(props: {
 							setCode(element.value);
 							update_scroll(element);
 						} else if (e.key === "/" && e.ctrlKey) {
+							const COMMENT = ";";
 							e.preventDefault();
 
 							const lines = element.value.split("\n");
@@ -81,15 +82,19 @@ export default function Editor(props: {
 							const current_line = lines[current_line_idx];
 							
 							const start_of_code = current_line.length - current_line.trimStart().length;
-							const COMMENT = ";";
-
-							if (current_line[start_of_code] === COMMENT) {	
+							
+							let cursor_pos = element.selectionStart;
+							if (current_line[start_of_code] === COMMENT) {
+								cursor_pos -= COMMENT.length + 1;
 								lines[current_line_idx] = current_line.substring(0, start_of_code) + current_line.substring(start_of_code + COMMENT.length + 1);
 							} else {
+								cursor_pos += COMMENT.length + 1;
 								lines[current_line_idx] = current_line.substring(0, start_of_code) + COMMENT + " " + current_line.substring(start_of_code);
 							}
 							
 							element.value = lines.join("\n");
+							element.selectionStart = cursor_pos;
+							element.selectionEnd = cursor_pos;
 
 							setCode(element.value);
 							update_scroll(element);
